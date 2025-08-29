@@ -1,0 +1,8 @@
+{
+  // "jest.jestCommandLine": "jest --coverage",
+  // "jest.rootPath": "src/tests",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": ["javascript"]
+}
