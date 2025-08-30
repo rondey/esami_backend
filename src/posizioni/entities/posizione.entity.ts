@@ -9,6 +9,7 @@ export class Posizione {
   @Column({
     length: 100,
     nullable: false,
+    unique: true,
   })
   descrizionePosizione: string;
 

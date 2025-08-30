@@ -9,6 +9,7 @@ export class Ambulatorio {
   @Column({
     length: 100,
     nullable: false,
+    unique: true,
   })
   descrizioneAmbulatorio: string;
 
