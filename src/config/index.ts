@@ -6,9 +6,9 @@ import { config as dotenvConfig } from 'dotenv';
 
 dotenvConfig({ path: 'src/.env' });
 
-const configTypeOrm = {
+const configTypeOrm: DataSourceOptions = {
   type: 'better-sqlite3',
-  database: process.env.DATABASE_HOST,
+  database: process.env.DATABASE_HOST || 'default.db',
   entities: [path.join(__dirname, '../**/*.entity{.ts,.js}')],
   migrations: [path.join(__dirname, '../migrations/*{.ts,.js}')],
   synchronize: false,
@@ -20,6 +20,4 @@ const configOverall = {
 };
 
 export default registerAs('config', () => configOverall);
-export const connectionSource = new DataSource(
-  configTypeOrm as DataSourceOptions,
-);
+export const connectionSource = new DataSource(configTypeOrm);
