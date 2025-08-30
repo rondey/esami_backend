@@ -2,8 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { EsamiModule } from './esami/esami.module';
+import { PosizioniModule } from './posizioni/posizioni.module';
+import { AmbulatoriModule } from './ambulatori/ambulatori.module';
 
 import typeorm from './config';
 @Module({
@@ -17,6 +20,9 @@ import typeorm from './config';
       useFactory: (configService: ConfigService) =>
         configService.get('config')!,
     }),
+    EsamiModule,
+    PosizioniModule,
+    AmbulatoriModule,
   ],
   controllers: [AppController],
   providers: [AppService],
