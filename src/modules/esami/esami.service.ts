@@ -22,8 +22,10 @@ export class EsamiService {
     return this.esamiRepository.find({
       where: {
         ...buildCommonFilters(data),
-        ambulatori: {
-          id: data.ambulatorioId,
+        esamiAmbulatori: {
+          ambulatorio: {
+            id: data.ambulatorioId,
+          },
         },
         posizione: {
           id: data.posizioneId,

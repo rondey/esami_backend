@@ -9,6 +9,7 @@ export default class EsamiSeeder extends Seeder {
     const esameRepo = dataSource.getRepository(Esame);
     const posizioneRepo = dataSource.getRepository(Posizione);
     const ambulatorioRepo = dataSource.getRepository(Ambulatorio);
+    const esameAmbulatorioRepo = dataSource.getRepository('EsameAmbulatorio');
 
     /** ====================
      *  POSIZIONI CORPO
@@ -302,7 +303,7 @@ export default class EsamiSeeder extends Seeder {
     ];
 
     /** ====================
-     *  CREAZIONE ESAMI
+     *  CREAZIONE ESAMI + LEGAMI
      * ==================== */
     for (const [i, e] of esamiData.entries()) {
       const posizione = posizioni.find(
@@ -310,30 +311,39 @@ export default class EsamiSeeder extends Seeder {
       );
       if (!posizione) continue;
 
-      // Ambulatori coerenti + 1 random (solo se ambulatorio con cognome)
+      const esame = await esameRepo.save(
+        esameRepo.create({
+          codiceMinisteriale: `90.${String(i + 1).padStart(2, '0')}.0_${i}`,
+          codiceInterno: `INT${i + 1}`,
+          descrizioneEsame: e.descrizione,
+          posizione,
+        }),
+      );
+
+      // ambulatori coerenti
       const stanzeCoerenti = ambulatori.filter((a) =>
         e.stanze.some((stanza) => a.descrizioneAmbulatorio.includes(stanza)),
       );
-      const ambulatoriFinali = [...stanzeCoerenti];
 
+      // aggiungi un extra random con cognome, se disponibile
       const extra = ambulatori.filter(
         (a) =>
           /^[A-Z][a-z]+/.test(a.descrizioneAmbulatorio) &&
           e.stanze.some((stanza) => a.descrizioneAmbulatorio.endsWith(stanza)),
       );
       if (extra.length > 0) {
-        ambulatoriFinali.push(extra[Math.floor(Math.random() * extra.length)]);
+        stanzeCoerenti.push(extra[Math.floor(Math.random() * extra.length)]);
       }
 
-      await esameRepo.save(
-        esameRepo.create({
-          codiceMinisteriale: `90.${String(i + 1).padStart(2, '0')}.0_${i}`,
-          codiceInterno: `INT${i + 1}`,
-          descrizioneEsame: e.descrizione,
-          posizione,
-          ambulatori: ambulatoriFinali,
-        }),
-      );
+      // crea le entry nella tabella pivot
+      for (const ambulatorio of stanzeCoerenti) {
+        await esameAmbulatorioRepo.save(
+          esameAmbulatorioRepo.create({
+            esame,
+            ambulatorio,
+          }),
+        );
+      }
     }
   }
 }

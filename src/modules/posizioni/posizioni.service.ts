@@ -23,8 +23,10 @@ export class PosizioniService {
       where: {
         esami: {
           ...buildCommonFilters(data),
-          ambulatori: {
-            id: data.ambulatorioId,
+          esamiAmbulatori: {
+            ambulatorio: {
+              id: data.ambulatorioId,
+            },
           },
         },
       },

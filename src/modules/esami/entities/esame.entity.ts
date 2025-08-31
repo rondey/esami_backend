@@ -1,14 +1,13 @@
-import { Ambulatorio } from 'src/modules/ambulatori/entities/ambulatorio.entity';
 import { Posizione } from 'src/modules/posizioni/entities/posizione.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToMany,
-  JoinTable,
   ManyToOne,
+  OneToMany,
   // Index
 } from 'typeorm';
+import { EsameAmbulatorio } from './esame-ambulatorio.entity';
 
 @Entity({ name: 'esami' })
 export class Esame {
@@ -44,23 +43,6 @@ export class Esame {
   })
   posizione: Posizione;
 
-  @ManyToMany(() => Ambulatorio, (ambulatorio) => ambulatorio.esami, {
-    nullable: false,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  @JoinTable({
-    name: 'esami_ambulatori',
-    joinColumn: {
-      name: 'esameId',
-      referencedColumnName: 'id',
-      foreignKeyConstraintName: 'fk_esami_ambulatori_esame',
-    },
-    inverseJoinColumn: {
-      name: 'ambulatorioId',
-      referencedColumnName: 'id',
-      foreignKeyConstraintName: 'fk_esami_ambulatori_ambulatorio',
-    },
-  })
-  ambulatori: Ambulatorio[];
+  @OneToMany(() => EsameAmbulatorio, (ea) => ea.esame)
+  esamiAmbulatori: EsameAmbulatorio[];
 }

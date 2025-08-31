@@ -21,8 +21,10 @@ export class AmbulatoriService {
   findAll(data: FiltersEsamiDto) {
     return this.ambulatoriRepository.find({
       where: {
-        esami: {
-          ...buildCommonFilters(data),
+        esamiAmbulatori: {
+          esame: {
+            ...buildCommonFilters(data),
+          },
         },
       },
     });
