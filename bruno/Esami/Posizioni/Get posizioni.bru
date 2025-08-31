@@ -1,0 +1,20 @@
+meta {
+  name: Get posizioni
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:3000/posizioni?ambulatorioId=10&descrizioneEsame=dx
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ambulatorioId: 10
+  descrizioneEsame: dx
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,34 +1,50 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  ValidationPipe,
+  // Post,
+  // Body,
+  // Patch,
+  // Param,
+  // Delete,
+} from '@nestjs/common';
 import { PosizioniService } from './posizioni.service';
-import { CreatePosizioniDto } from './dto/create-posizioni.dto';
-import { UpdatePosizioniDto } from './dto/update-posizioni.dto';
+import { GetPosizioniDto } from './dto/get-posizioni.dto';
+// import { CreatePosizioniDto } from './dto/create-posizioni.dto';
+// import { UpdatePosizioniDto } from './dto/update-posizioni.dto';
 
 @Controller('posizioni')
 export class PosizioniController {
   constructor(private readonly posizioniService: PosizioniService) {}
 
-  @Post()
-  create(@Body() createPosizioniDto: CreatePosizioniDto) {
-    return this.posizioniService.create(createPosizioniDto);
-  }
-
+  // @Post()
+  // create(@Body() createPosizioniDto: CreatePosizioniDto) {
+  //   return this.posizioniService.create(createPosizioniDto);
+  // }
+  GetPosizioniDto;
   @Get()
-  findAll() {
-    return this.posizioniService.findAll();
+  findAll(
+    @Query(new ValidationPipe({ transform: true })) data: GetPosizioniDto,
+  ) {
+    return this.posizioniService.findAll(data);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.posizioniService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.posizioniService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePosizioniDto: UpdatePosizioniDto) {
-    return this.posizioniService.update(+id, updatePosizioniDto);
-  }
+  // @Patch(':id')
+  // update(
+  //   @Param('id') id: string,
+  //   @Body() updatePosizioniDto: UpdatePosizioniDto,
+  // ) {
+  //   return this.posizioniService.update(+id, updatePosizioniDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.posizioniService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.posizioniService.remove(+id);
+  // }
 }
