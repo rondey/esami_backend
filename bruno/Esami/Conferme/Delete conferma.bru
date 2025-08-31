@@ -1,0 +1,19 @@
+meta {
+  name: Delete conferma
+  type: http
+  seq: 1
+}
+
+delete {
+  url: http://localhost:3000/conferme/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+settings {
+  encodeUrl: true
+}

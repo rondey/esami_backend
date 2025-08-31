@@ -7,6 +7,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EsamiModule } from './modules/esami/esami.module';
 import { PosizioniModule } from './modules/posizioni/posizioni.module';
 import { AmbulatoriModule } from './modules/ambulatori/ambulatori.module';
+import { ConfermeModule } from './modules/conferme/conferme.module';
 
 import typeorm from './config';
 @Module({
@@ -23,6 +24,7 @@ import typeorm from './config';
     EsamiModule,
     PosizioniModule,
     AmbulatoriModule,
+    ConfermeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

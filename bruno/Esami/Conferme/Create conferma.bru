@@ -1,0 +1,22 @@
+meta {
+  name: Create conferma
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/conferme
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "esameId": 20,
+    "ambulatorioId": 10
+  }
+}
+
+settings {
+  encodeUrl: true
+}

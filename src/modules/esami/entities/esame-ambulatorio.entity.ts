@@ -1,7 +1,7 @@
-import { Entity, PrimaryColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Esame } from 'src/modules/esami/entities/esame.entity';
 import { Ambulatorio } from 'src/modules/ambulatori/entities/ambulatorio.entity';
-// import { Conferma } from 'src/modules/conferme/entities/conferma.entity';
+import { Conferma } from 'src/modules/conferme/entities/conferma.entity';
 
 @Entity({ name: 'esami_ambulatori' })
 export class EsameAmbulatorio {
@@ -23,10 +23,8 @@ export class EsameAmbulatorio {
   })
   ambulatorio: Ambulatorio;
 
-  //   @ManyToOne(() => Conferma, (conferma) => conferma.esamiAmbulatori, {
-  //     nullable: true,
-  //     onDelete: 'RESTRICT',
-  //     onUpdate: 'RESTRICT',
-  //   })
-  //   conferma: Conferma;
+  @OneToOne(() => Conferma, (conferma) => conferma.esameAmbulatorio, {
+    nullable: true,
+  })
+  conferma: Conferma;
 }
