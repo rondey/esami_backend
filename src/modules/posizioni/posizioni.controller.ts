@@ -22,7 +22,7 @@ export class PosizioniController {
   // create(@Body() createPosizioniDto: CreatePosizioniDto) {
   //   return this.posizioniService.create(createPosizioniDto);
   // }
-  GetPosizioniDto;
+
   @Get()
   findAll(
     @Query(new ValidationPipe({ transform: true })) data: GetPosizioniDto,
