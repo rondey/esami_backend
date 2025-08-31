@@ -17,3 +17,9 @@ export abstract class Predefiniti_Dicom {
   public static DCMBNPrintProcessServerAdditionalOptions: string =
     '-bn-default';
 }
+
+export abstract class Predefiniti_Filtri {
+  public static CodiceMinisteriale: string = '';
+  public static CodiceInterno: string = '';
+  public static DescrizioneEsame: string = '';
+}
