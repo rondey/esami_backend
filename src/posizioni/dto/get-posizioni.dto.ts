@@ -2,7 +2,7 @@ import { IntersectionType } from '@nestjs/mapped-types';
 import { IsNumberString } from 'class-validator';
 import { FiltersEsamiDto } from 'src/esami/dto/filter-esami.dto';
 
-class SelectedPosizioniParentsDto {
+export class SelectedPosizioniParentsDto {
   @IsNumberString()
   ambulatorioId: number;
 }

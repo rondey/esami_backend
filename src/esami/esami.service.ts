@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { GetEsamiDto } from './dto/get-esami.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Esame } from './entities/esame.entity';
-import { ILike, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+import { buildCommonFilters } from './helpers/filters';
 // import { CreateEsamiDto } from './dto/create-esami.dto';
 // import { UpdateEsamiDto } from './dto/update-esami.dto';
 
@@ -12,6 +13,7 @@ export class EsamiService {
     @InjectRepository(Esame)
     private esamiRepository: Repository<Esame>,
   ) {}
+
   // create(createEsamiDto: CreateEsamiDto) {
   //   return 'This action adds a new esami';
   // }
@@ -19,9 +21,13 @@ export class EsamiService {
   findAll(data: GetEsamiDto) {
     return this.esamiRepository.find({
       where: {
-        codiceMinisteriale: ILike(`%${data.codiceMinisteriale}%`),
-        codiceInterno: ILike(`%${data.codiceInterno}%`),
-        descrizioneEsame: ILike(`%${data.descrizioneEsame}%`),
+        ...buildCommonFilters(data),
+        ambulatori: {
+          id: data.ambulatorioId,
+        },
+        posizione: {
+          id: data.posizioneId,
+        },
       },
     });
   }

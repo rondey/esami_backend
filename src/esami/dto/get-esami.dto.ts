@@ -1,15 +1,15 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IntersectionType } from '@nestjs/mapped-types';
+import { IsNumberString } from 'class-validator';
+import { SelectedPosizioniParentsDto } from 'src/posizioni/dto/get-posizioni.dto';
+import { FiltersEsamiDto } from 'src/esami/dto/filter-esami.dto';
 
-export class GetEsamiDto {
-  @IsString()
-  @IsOptional()
-  codiceMinisteriale: string = '';
-
-  @IsString()
-  @IsOptional()
-  codiceInterno: string = '';
-
-  @IsString()
-  @IsOptional()
-  descrizioneEsame: string = '';
+class SelectedEsamiParentsDto {
+  @IsNumberString()
+  posizioneId: number;
 }
+
+export class GetEsamiDto extends IntersectionType(
+  SelectedEsamiParentsDto,
+  SelectedPosizioniParentsDto,
+  FiltersEsamiDto,
+) {}
