@@ -1,6 +1,8 @@
 import {
   Controller,
   Get,
+  Query,
+  ValidationPipe,
   // Post,
   // Body,
   // Patch,
@@ -8,6 +10,7 @@ import {
   // Delete,
 } from '@nestjs/common';
 import { AmbulatoriService } from './ambulatori.service';
+import { FiltersEsamiDto } from 'src/esami/dto/filter-esami.dto';
 // import { CreateAmbulatoriDto } from './dto/create-ambulatori.dto';
 // import { UpdateAmbulatoriDto } from './dto/update-ambulatori.dto';
 
@@ -21,8 +24,10 @@ export class AmbulatoriController {
   // }
 
   @Get()
-  findAll() {
-    return this.ambulatoriService.findAll();
+  findAll(
+    @Query(new ValidationPipe({ transform: true })) data: FiltersEsamiDto,
+  ) {
+    return this.ambulatoriService.findAll(data);
   }
 
   // @Get(':id')
