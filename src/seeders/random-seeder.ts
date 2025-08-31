@@ -1,37 +1,50 @@
 import { DataSource } from 'typeorm';
 import { Seeder } from '@jorgebodega/typeorm-seeding';
-import { Ambulatorio } from 'src/ambulatori/entities/ambulatorio.entity';
 import { Esame } from 'src/esami/entities/esame.entity';
 import { Posizione } from 'src/posizioni/entities/posizione.entity';
+import { Ambulatorio } from 'src/ambulatori/entities/ambulatorio.entity';
 
 export default class EsamiSeeder extends Seeder {
   async run(dataSource: DataSource) {
-    const posizioniRepo = dataSource.getRepository(Posizione);
-    const ambulatoriRepo = dataSource.getRepository(Ambulatorio);
-    const esamiRepo = dataSource.getRepository(Esame);
+    const esameRepo = dataSource.getRepository(Esame);
+    const posizioneRepo = dataSource.getRepository(Posizione);
+    const ambulatorioRepo = dataSource.getRepository(Ambulatorio);
 
-    // --- Posizioni ---
+    /** ====================
+     *  POSIZIONI CORPO
+     * ==================== */
     const posizioniNomi = [
-      'Testa',
-      'Collo',
+      'Cranio',
+      'Cervello',
       'Torace',
-      'Addome',
-      'Arti superiori',
-      'Arti inferiori',
-      'Pelvi',
-      'Colonna vertebrale',
+      'Polmone',
       'Cuore',
-      'Reni',
+      'Addome',
+      'Fegato',
+      'Rene',
+      'Vescica',
+      'Colonna vertebrale',
+      'Ginocchio',
+      'Spalla',
+      'Mano',
+      'Piede',
+      'Occhio',
+      'Orecchio',
+      'Gola',
+      'Intestino',
+      'Stomaco',
+      'Prostata',
     ];
-    const posizioniMap: Record<string, Posizione> = {};
-    for (const nome of posizioniNomi) {
-      const pos = posizioniRepo.create({ descrizionePosizione: nome });
-      await posizioniRepo.save(pos);
-      posizioniMap[nome] = pos;
-    }
+    const posizioni = await posizioneRepo.save(
+      posizioniNomi.map((p) =>
+        posizioneRepo.create({ descrizionePosizione: p }),
+      ),
+    );
 
-    // --- Stanze base ---
-    const stanzeNomi = [
+    /** ====================
+     *  STANZE BASE
+     * ==================== */
+    const stanzeBase = [
       'Radiologia',
       'Tac',
       'Risonanza',
@@ -51,7 +64,9 @@ export default class EsamiSeeder extends Seeder {
       'Reumatologia',
     ];
 
-    // --- Cognomi per nomi fittizi ---
+    /** ====================
+     *  NOMI COGNOME AMBULATORI
+     * ==================== */
     const cognomi = [
       'Rossi',
       'Bianchi',
@@ -63,167 +78,262 @@ export default class EsamiSeeder extends Seeder {
       'Russo',
       'Ferrari',
       'Romano',
+      'Costa',
+      'Greco',
+      'Marino',
+      'Conti',
+      'De Luca',
+      'Fontana',
+      'Barbieri',
+      'Santoro',
+      'Rinaldi',
+      'Moretti',
     ];
 
-    // --- Generazione ambulatori (CognomeStanza) ---
-    const ambulatoriMap: Record<string, Ambulatorio> = {};
-    for (const stanza of stanzeNomi) {
-      const count = Math.floor(Math.random() * 3) + 1;
-      const shuffledCognomi = cognomi.sort(() => 0.5 - Math.random());
-      for (let i = 0; i < count; i++) {
-        const nomeAmbulatorio = `${stanza}${shuffledCognomi[i]}`;
-        const amb = ambulatoriRepo.create({
-          descrizioneAmbulatorio: nomeAmbulatorio,
-        });
-        await ambulatoriRepo.save(amb);
-        ambulatoriMap[nomeAmbulatorio] = amb;
+    const ambulatori: Ambulatorio[] = [];
+    const usati = new Set<string>(); // 👈 qui salviamo i nomi già creati
+
+    for (const stanza of stanzeBase) {
+      // Aggiungiamo sempre l’ambulatorio “puro”
+      if (!usati.has(stanza)) {
+        ambulatori.push(
+          ambulatorioRepo.create({ descrizioneAmbulatorio: stanza }),
+        );
+        usati.add(stanza);
       }
-      // Aggiunge anche la stanza diretta
-      if (!ambulatoriMap[stanza]) {
-        const amb = ambulatoriRepo.create({ descrizioneAmbulatorio: stanza });
-        await ambulatoriRepo.save(amb);
-        ambulatoriMap[stanza] = amb;
+
+      // Generiamo 2 varianti con cognome casuale
+      for (let i = 0; i < 2; i++) {
+        let nome: string;
+        do {
+          const cognome = cognomi[Math.floor(Math.random() * cognomi.length)];
+          nome = `${cognome}${stanza}`;
+        } while (usati.has(nome)); // 👈 garantisce unicità
+
+        ambulatori.push(
+          ambulatorioRepo.create({ descrizioneAmbulatorio: nome }),
+        );
+        usati.add(nome);
       }
     }
 
-    // --- Esami con ambulatori coerenti ---
+    await ambulatorioRepo.save(ambulatori);
+
+    /** ====================
+     *  ESAMI
+     * ==================== */
     const esamiData = [
+      { descrizione: 'RX mano dx', posizione: 'Mano', stanze: ['Radiologia'] },
+      { descrizione: 'RX mano sx', posizione: 'Mano', stanze: ['Radiologia'] },
+      { descrizione: 'RX torace', posizione: 'Torace', stanze: ['Radiologia'] },
       {
-        nome: 'RX mano Dx',
-        posizione: 'Arti superiori',
-        ambulatori: ['Radiologia'],
+        descrizione: 'RX ginocchio dx',
+        posizione: 'Ginocchio',
+        stanze: ['Radiologia'],
       },
       {
-        nome: 'RX mano Sx',
-        posizione: 'Arti superiori',
-        ambulatori: ['Radiologia'],
+        descrizione: 'RX ginocchio sx',
+        posizione: 'Ginocchio',
+        stanze: ['Radiologia'],
       },
-      { nome: 'RX torace', posizione: 'Torace', ambulatori: ['Radiologia'] },
-      { nome: 'RMN cranio', posizione: 'Testa', ambulatori: ['Risonanza'] },
       {
-        nome: 'RMN colonna lombare',
+        descrizione: 'RX spalla dx',
+        posizione: 'Spalla',
+        stanze: ['Radiologia'],
+      },
+      {
+        descrizione: 'RX spalla sx',
+        posizione: 'Spalla',
+        stanze: ['Radiologia'],
+      },
+      { descrizione: 'TAC cranio', posizione: 'Cranio', stanze: ['Tac'] },
+      { descrizione: 'TAC addome', posizione: 'Addome', stanze: ['Tac'] },
+      { descrizione: 'TAC torace', posizione: 'Torace', stanze: ['Tac'] },
+      {
+        descrizione: 'TAC colonna vertebrale',
         posizione: 'Colonna vertebrale',
-        ambulatori: ['Risonanza'],
+        stanze: ['Tac'],
       },
-      { nome: 'Eco Addome', posizione: 'Addome', ambulatori: ['Ecografia'] },
-      { nome: 'Eco Torace', posizione: 'Torace', ambulatori: ['Ecografia'] },
       {
-        nome: 'Elettrocardiogramma',
-        posizione: 'Cuore',
-        ambulatori: ['Cardiologia'],
+        descrizione: 'RMN cranio',
+        posizione: 'Cervello',
+        stanze: ['Risonanza'],
       },
-      { nome: 'EEG', posizione: 'Testa', ambulatori: ['Neurologia'] },
-      { nome: 'Uroflussometria', posizione: 'Reni', ambulatori: ['Urologia'] },
-      { nome: 'Cistografia', posizione: 'Reni', ambulatori: ['Urologia'] },
       {
-        nome: 'Endoscopia digestiva alta',
+        descrizione: 'RMN ginocchio dx',
+        posizione: 'Ginocchio',
+        stanze: ['Risonanza'],
+      },
+      {
+        descrizione: 'RMN ginocchio sx',
+        posizione: 'Ginocchio',
+        stanze: ['Risonanza'],
+      },
+      {
+        descrizione: 'RMN spalla dx',
+        posizione: 'Spalla',
+        stanze: ['Risonanza'],
+      },
+      {
+        descrizione: 'RMN spalla sx',
+        posizione: 'Spalla',
+        stanze: ['Risonanza'],
+      },
+      {
+        descrizione: 'RMN colonna vertebrale',
+        posizione: 'Colonna vertebrale',
+        stanze: ['Risonanza'],
+      },
+      {
+        descrizione: 'Ecografia addome completo',
         posizione: 'Addome',
-        ambulatori: ['Endoscopia'],
+        stanze: ['Ecografia'],
       },
-      { nome: 'Colonscopia', posizione: 'Addome', ambulatori: ['Endoscopia'] },
       {
-        nome: 'Visita cardiologica',
+        descrizione: 'Ecografia fegato',
+        posizione: 'Fegato',
+        stanze: ['Ecografia'],
+      },
+      {
+        descrizione: 'Ecografia rene dx',
+        posizione: 'Rene',
+        stanze: ['Ecografia'],
+      },
+      {
+        descrizione: 'Ecografia rene sx',
+        posizione: 'Rene',
+        stanze: ['Ecografia'],
+      },
+      {
+        descrizione: 'Ecografia vescica',
+        posizione: 'Vescica',
+        stanze: ['Ecografia'],
+      },
+      {
+        descrizione: 'Elettrocardiogramma (ECG)',
         posizione: 'Cuore',
-        ambulatori: ['Cardiologia'],
+        stanze: ['Cardiologia'],
       },
       {
-        nome: 'Visita neurologica',
-        posizione: 'Testa',
-        ambulatori: ['Neurologia'],
+        descrizione: 'Ecocardiogramma',
+        posizione: 'Cuore',
+        stanze: ['Cardiologia'],
       },
       {
-        nome: 'Visita gastroenterologica',
+        descrizione: 'Elettroencefalogramma (EEG)',
+        posizione: 'Cervello',
+        stanze: ['Neurologia'],
+      },
+      {
+        descrizione: 'Esame urodinamico',
+        posizione: 'Vescica',
+        stanze: ['Urologia'],
+      },
+      {
+        descrizione: 'Uroflussometria',
+        posizione: 'Vescica',
+        stanze: ['Urologia'],
+      },
+      {
+        descrizione: 'Gastroscopia',
+        posizione: 'Stomaco',
+        stanze: ['Endoscopia'],
+      },
+      {
+        descrizione: 'Colonscopia',
+        posizione: 'Intestino',
+        stanze: ['Endoscopia'],
+      },
+      {
+        descrizione: 'Artroscopia ginocchio dx',
+        posizione: 'Ginocchio',
+        stanze: ['Ortopedia'],
+      },
+      {
+        descrizione: 'Artroscopia ginocchio sx',
+        posizione: 'Ginocchio',
+        stanze: ['Ortopedia'],
+      },
+      {
+        descrizione: 'Biopsia cutanea',
+        posizione: 'Pelle',
+        stanze: ['Dermatologia'],
+      },
+      {
+        descrizione: 'Esame sangue emocromo',
         posizione: 'Addome',
-        ambulatori: ['Gastroenterologia'],
+        stanze: ['LaboratorioAnalisi'],
       },
       {
-        nome: 'Visita dermatologica',
-        posizione: 'Arti superiori',
-        ambulatori: ['Dermatologia'],
-      },
-      { nome: 'Visita urologica', posizione: 'Reni', ambulatori: ['Urologia'] },
-      {
-        nome: 'Visita ortopedica',
-        posizione: 'Arti inferiori',
-        ambulatori: ['Ortopedia'],
+        descrizione: 'Esame urine completo',
+        posizione: 'Vescica',
+        stanze: ['LaboratorioAnalisi'],
       },
       {
-        nome: 'Visita pediatrica',
-        posizione: 'Arti superiori',
-        ambulatori: ['Pediatria'],
+        descrizione: 'Fundus oculi',
+        posizione: 'Occhio',
+        stanze: ['Oculistica'],
       },
       {
-        nome: 'Visita oculistica',
-        posizione: 'Testa',
-        ambulatori: ['Oculistica'],
+        descrizione: 'Campo visivo',
+        posizione: 'Occhio',
+        stanze: ['Oculistica'],
       },
       {
-        nome: 'Visita otorinolaringoiatrica',
-        posizione: 'Collo',
-        ambulatori: ['Otorinolaringoiatria'],
+        descrizione: 'Audiometria',
+        posizione: 'Orecchio',
+        stanze: ['Otorinolaringoiatria'],
       },
       {
-        nome: 'Visita reumatologica',
-        posizione: 'Arti inferiori',
-        ambulatori: ['Reumatologia'],
-      },
-      {
-        nome: 'Visita chirurgica',
+        descrizione: 'Visita pediatrica generale',
         posizione: 'Torace',
-        ambulatori: ['Chirurgia'],
+        stanze: ['Pediatria'],
+      },
+      {
+        descrizione: 'Visita chirurgica',
+        posizione: 'Addome',
+        stanze: ['Chirurgia'],
+      },
+      {
+        descrizione: 'Visita reumatologica',
+        posizione: 'Articolazioni',
+        stanze: ['Reumatologia'],
       },
     ];
 
-    const ministerialiMap: Record<string, string> = {
-      RX: '90.01.2_0',
-      RMN: '90.02.3_0',
-      Eco: '90.03.4_0',
-      Elettrocardiogramma: '90.04.5_0',
-      EEG: '90.05.6_0',
-      Angiografia: '90.06.7_0',
-      Endoscopia: '90.07.8_0',
-      Colonscopia: '90.08.9_0',
-      Visita: '90.09.0_0',
-      Uroflussometria: '90.10.1_0',
-      Cistografia: '90.11.2_0',
-      Ortopantomografia: '90.12.3_0',
-    };
+    /** ====================
+     *  CREAZIONE ESAMI
+     * ==================== */
+    for (const [i, e] of esamiData.entries()) {
+      const posizione = posizioni.find(
+        (p) => p.descrizionePosizione === e.posizione,
+      );
+      if (!posizione) continue;
 
-    let codiceInternoCounter = 1;
+      // Ambulatori coerenti + 1 random (solo se ambulatorio con cognome)
+      const stanzeCoerenti = ambulatori.filter((a) =>
+        e.stanze.some((stanza) => a.descrizioneAmbulatorio.includes(stanza)),
+      );
+      const ambulatoriFinali = [...stanzeCoerenti];
 
-    for (const esameInfo of esamiData) {
-      const prefix = esameInfo.nome.split(' ')[0];
-      const ministeriale = ministerialiMap[prefix] || '99.99.9_0';
+      const extra = ambulatori.filter(
+        (a) =>
+          /^[A-Z][a-z]+/.test(a.descrizioneAmbulatorio) &&
+          e.stanze.some((stanza) => a.descrizioneAmbulatorio.endsWith(stanza)),
+      );
+      if (extra.length > 0) {
+        ambulatoriFinali.push(extra[Math.floor(Math.random() * extra.length)]);
+      }
 
-      // Assegnamento coerente ambulatori (stanza diretta o CognomeStanza)
-      const assignedAmbulatori = esameInfo.ambulatori
-        .map((stanza) => {
-          const candidates = Object.keys(ambulatoriMap).filter((a) =>
-            a.startsWith(stanza),
-          );
-          const shuffled = candidates.sort(() => 0.5 - Math.random());
-          const count = Math.min(
-            shuffled.length,
-            Math.floor(Math.random() * 2) + 1,
-          );
-          return shuffled.slice(0, count).map((a) => ambulatoriMap[a]);
-        })
-        .flat();
-
-      const esame = esamiRepo.create({
-        codiceMinisteriale: ministeriale,
-        codiceInterno: `INT${codiceInternoCounter.toString().padStart(4, '0')}`,
-        descrizioneEsame: esameInfo.nome,
-        posizione: posizioniMap[esameInfo.posizione],
-        ambulatori: assignedAmbulatori,
-      });
-
-      codiceInternoCounter++;
-      await esamiRepo.save(esame);
+      await esameRepo.save(
+        esameRepo.create({
+          codiceMinisteriale: `90.${String(i + 1).padStart(2, '0')}.0_${i}`,
+          codiceInterno: `INT${i + 1}`,
+          descrizioneEsame: e.descrizione,
+          posizione,
+          ambulatori: ambulatoriFinali,
+        }),
+      );
     }
-
-    console.log(
-      'Seeder completato: esami con ambulatori coerenti e CognomeStanza!',
-    );
   }
 }
