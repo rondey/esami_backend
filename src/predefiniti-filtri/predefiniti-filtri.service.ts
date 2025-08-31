@@ -8,6 +8,9 @@ export class PredefinitiFiltriService {
       codiceMinisteriale: Predefiniti_Filtri.CodiceMinisteriale,
       codiceInterno: Predefiniti_Filtri.CodiceInterno,
       descrizioneEsame: Predefiniti_Filtri.DescrizioneEsame,
+
+      ambulatorio: Predefiniti_Filtri.Ambulatorio,
+      posizione: Predefiniti_Filtri.Posizione,
     };
   }
 }
