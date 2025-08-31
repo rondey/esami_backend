@@ -6,9 +6,11 @@ import {
   // Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { ConfermeService } from './conferme.service';
 import { CreateConfermeDto } from './dto/create-conferme.dto';
+import * as sortPipe from 'src/common/pipe/sort.pipe';
 // import { UpdateConfermeDto } from './dto/update-conferme.dto';
 
 @Controller('conferme')
@@ -21,8 +23,25 @@ export class ConfermeController {
   }
 
   @Get()
-  findAll() {
-    return this.confermeService.findAll();
+  async findAll(
+    @Query(
+      new sortPipe.SortPipe({
+        defaultSortBy: 'name',
+        defaultSortOrder: 'ASC',
+        allowedSortColumns: [
+          'id',
+          'codiceMinisteriale',
+          'codiceInterno',
+          'descrizioneEsame',
+          'descrizioneAmbulatorio',
+          'descrizionePosizione',
+          'createdAt',
+        ],
+      }),
+    )
+    sort: sortPipe.SortParams,
+  ) {
+    return this.confermeService.findAll(sort);
   }
 
   // @Get(':id')

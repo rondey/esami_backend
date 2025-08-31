@@ -3,6 +3,7 @@ import { CreateConfermeDto } from './dto/create-conferme.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Conferma } from './entities/conferma.entity';
 import { Repository } from 'typeorm';
+import { SortParams } from 'src/common/pipe/sort.pipe';
 // import { UpdateConfermeDto } from './dto/update-conferme.dto';
 
 @Injectable()
@@ -25,8 +26,20 @@ export class ConfermeService {
     );
   }
 
-  findAll() {
-    return this.confermeRepository.find();
+  findAll({ sortBy, sortOrder }: SortParams) {
+    return this.confermeRepository.find({
+      relations: {
+        esameAmbulatorio: {
+          esame: {
+            posizione: true,
+          },
+          ambulatorio: true,
+        },
+      },
+      order: {
+        [sortBy]: sortOrder,
+      },
+    });
   }
 
   // findOne(id: number) {
