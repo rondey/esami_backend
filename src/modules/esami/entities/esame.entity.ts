@@ -1,5 +1,5 @@
-import { Ambulatorio } from 'src/ambulatori/entities/ambulatorio.entity';
-import { Posizione } from 'src/posizioni/entities/posizione.entity';
+import { Ambulatorio } from 'src/modules/ambulatori/entities/ambulatorio.entity';
+import { Posizione } from 'src/modules/posizioni/entities/posizione.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

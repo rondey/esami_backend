@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Posizione } from './entities/posizione.entity';
 import { Repository } from 'typeorm';
 import { GetPosizioniDto } from './dto/get-posizioni.dto';
-import { buildCommonFilters } from 'src/esami/helpers/filters';
+import { buildCommonFilters } from 'src/modules/esami/helpers/filters';
 // import { CreatePosizioniDto } from './dto/create-posizioni.dto';
 // import { UpdatePosizioniDto } from './dto/update-posizioni.dto';
 

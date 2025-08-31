@@ -10,7 +10,7 @@ import {
   // Delete,
 } from '@nestjs/common';
 import { AmbulatoriService } from './ambulatori.service';
-import { FiltersEsamiDto } from 'src/esami/dto/filter-esami.dto';
+import { FiltersEsamiDto } from 'src/modules/esami/dto/filter-esami.dto';
 // import { CreateAmbulatoriDto } from './dto/create-ambulatori.dto';
 // import { UpdateAmbulatoriDto } from './dto/update-ambulatori.dto';
 

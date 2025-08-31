@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FiltersEsamiDto } from 'src/esami/dto/filter-esami.dto';
+import { FiltersEsamiDto } from 'src/modules/esami/dto/filter-esami.dto';
 import { Repository } from 'typeorm';
 import { Ambulatorio } from './entities/ambulatorio.entity';
-import { buildCommonFilters } from 'src/esami/helpers/filters';
+import { buildCommonFilters } from 'src/modules/esami/helpers/filters';
 // import { CreateAmbulatoriDto } from './dto/create-ambulatori.dto';
 // import { UpdateAmbulatoriDto } from './dto/update-ambulatori.dto';
 

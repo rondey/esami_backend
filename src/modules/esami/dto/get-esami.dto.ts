@@ -1,7 +1,7 @@
 import { IntersectionType } from '@nestjs/mapped-types';
 import { IsNumberString } from 'class-validator';
-import { SelectedPosizioniParentsDto } from 'src/posizioni/dto/get-posizioni.dto';
-import { FiltersEsamiDto } from 'src/esami/dto/filter-esami.dto';
+import { SelectedPosizioniParentsDto } from 'src/modules/posizioni/dto/get-posizioni.dto';
+import { FiltersEsamiDto } from 'src/modules/esami/dto/filter-esami.dto';
 
 class SelectedEsamiParentsDto {
   @IsNumberString()

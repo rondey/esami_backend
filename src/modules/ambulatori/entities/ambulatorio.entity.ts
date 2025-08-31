@@ -1,4 +1,4 @@
-import { Esame } from 'src/esami/entities/esame.entity';
+import { Esame } from 'src/modules/esami/entities/esame.entity';
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'ambulatori' })

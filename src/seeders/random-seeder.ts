@@ -1,8 +1,8 @@
 import { DataSource } from 'typeorm';
 import { Seeder } from '@jorgebodega/typeorm-seeding';
-import { Esame } from 'src/esami/entities/esame.entity';
-import { Posizione } from 'src/posizioni/entities/posizione.entity';
-import { Ambulatorio } from 'src/ambulatori/entities/ambulatorio.entity';
+import { Esame } from 'src/modules/esami/entities/esame.entity';
+import { Posizione } from 'src/modules/posizioni/entities/posizione.entity';
+import { Ambulatorio } from 'src/modules/ambulatori/entities/ambulatorio.entity';
 
 export default class EsamiSeeder extends Seeder {
   async run(dataSource: DataSource) {

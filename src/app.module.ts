@@ -4,9 +4,9 @@ import { AppService } from './app.service';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { EsamiModule } from './esami/esami.module';
-import { PosizioniModule } from './posizioni/posizioni.module';
-import { AmbulatoriModule } from './ambulatori/ambulatori.module';
+import { EsamiModule } from './modules/esami/esami.module';
+import { PosizioniModule } from './modules/posizioni/posizioni.module';
+import { AmbulatoriModule } from './modules/ambulatori/ambulatori.module';
 
 import typeorm from './config';
 @Module({
