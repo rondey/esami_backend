@@ -19,9 +19,8 @@ export abstract class Predefiniti_Dicom {
 }
 
 export abstract class Predefiniti_Filtri {
-  public static CodiceMinisteriale: string = '';
-  public static CodiceInterno: string = '';
-  public static DescrizioneEsame: string = '';
+  public static CampoDiFiltraggio: string = '';
+  public static ValoreDiFiltraggio: string = '';
 
   public static Ambulatorio: number = 0;
   public static Posizione: number = 0;

@@ -5,9 +5,8 @@ import { Predefiniti_Filtri } from 'src/config/ini-config';
 export class PredefinitiFiltriService {
   findAll() {
     return {
-      codiceMinisteriale: Predefiniti_Filtri.CodiceMinisteriale,
-      codiceInterno: Predefiniti_Filtri.CodiceInterno,
-      descrizioneEsame: Predefiniti_Filtri.DescrizioneEsame,
+      campoDiFiltraggio: Predefiniti_Filtri.CampoDiFiltraggio,
+      valoreDiFiltraggio: Predefiniti_Filtri.ValoreDiFiltraggio,
 
       ambulatorio: Predefiniti_Filtri.Ambulatorio,
       posizione: Predefiniti_Filtri.Posizione,

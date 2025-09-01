@@ -8,7 +8,7 @@ import { EsamiModule } from './modules/esami/esami.module';
 import { PosizioniModule } from './modules/posizioni/posizioni.module';
 import { AmbulatoriModule } from './modules/ambulatori/ambulatori.module';
 import { ConfermeModule } from './modules/conferme/conferme.module';
-import { PredefinitiFiltriModule } from './predefiniti-filtri/predefiniti-filtri.module';
+import { PredefinitiFiltriModule } from './modules/predefiniti-filtri/predefiniti-filtri.module';
 
 import typeorm from './config';
 @Module({
