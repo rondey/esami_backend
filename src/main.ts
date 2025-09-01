@@ -6,7 +6,9 @@ import { loadConfig } from './common/utils/ini/load-config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors();
+  app.enableCors({
+    origin: [process.env.FRONTEND_URL],
+  });
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   await loadConfig();
