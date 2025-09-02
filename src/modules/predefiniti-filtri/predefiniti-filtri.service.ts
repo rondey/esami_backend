@@ -8,8 +8,9 @@ export class PredefinitiFiltriService {
       campoDiFiltraggio: Predefiniti_Filtri.CampoDiFiltraggio,
       valoreDiFiltraggio: Predefiniti_Filtri.ValoreDiFiltraggio,
 
-      ambulatorio: Predefiniti_Filtri.Ambulatorio,
-      posizione: Predefiniti_Filtri.Posizione,
+      ambulatorioId: Predefiniti_Filtri.Ambulatorio,
+      posizioneId: Predefiniti_Filtri.Posizione,
+      esameId: Predefiniti_Filtri.Esame,
     };
   }
 }

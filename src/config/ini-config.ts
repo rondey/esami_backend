@@ -24,4 +24,5 @@ export abstract class Predefiniti_Filtri {
 
   public static Ambulatorio: number = 0;
   public static Posizione: number = 0;
+  public static Esame: number = 0;
 }
