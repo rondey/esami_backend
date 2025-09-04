@@ -5,6 +5,7 @@ import { Conferma } from './entities/conferma.entity';
 import { Repository } from 'typeorm';
 import { SortParams } from 'src/common/pipe/sort.pipe';
 import { EsameAmbulatorio } from '../esami/entities/esame-ambulatorio.entity';
+import { orderParser } from 'src/common/utils/order-parser';
 // import { UpdateConfermeDto } from './dto/update-conferme.dto';
 
 @Injectable()
@@ -50,9 +51,7 @@ export class ConfermeService {
           ambulatorio: true,
         },
       },
-      order: {
-        [sortBy]: sortOrder,
-      },
+      order: sortBy ? orderParser<Conferma>(sortBy, sortOrder) : undefined,
     });
   }
 

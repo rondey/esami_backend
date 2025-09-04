@@ -26,15 +26,15 @@ export class ConfermeController {
   async findAll(
     @Query(
       new sortPipe.SortPipe({
-        defaultSortBy: 'name',
+        defaultSortBy: 'id',
         defaultSortOrder: 'ASC',
         allowedSortColumns: [
           'id',
-          'codiceMinisteriale',
-          'codiceInterno',
-          'descrizioneEsame',
-          'descrizioneAmbulatorio',
-          'descrizionePosizione',
+          'esameAmbulatorio.esame.codiceMinisteriale',
+          'esameAmbulatorio.esame.codiceInterno',
+          'esameAmbulatorio.esame.descrizioneEsame',
+          'esameAmbulatorio.esame.posizione.descrizionePosizione',
+          'esameAmbulatorio.ambulatorio.descrizioneAmbulatorio',
           'createdAt',
         ],
       }),
