@@ -337,6 +337,9 @@ export default class EsamiSeeder extends Seeder {
 
       // crea le entry nella tabella pivot
       for (const ambulatorio of stanzeCoerenti) {
+        // With random probability of 1/3, skip this esameAmbulatorio
+        const probability = Math.floor(Math.random() * 3);
+        if (probability > 0) continue;
         await esameAmbulatorioRepo.save(
           esameAmbulatorioRepo.create({
             esame,
