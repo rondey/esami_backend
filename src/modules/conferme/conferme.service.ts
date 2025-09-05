@@ -28,11 +28,16 @@ export class ConfermeService {
       );
 
     // Then, check if Conferma already exists
-    const conferma = await this.confermeRepository.findOneBy({
-      esameAmbulatorio: createConfermeDto,
+    const conferma = await this.confermeRepository.existsBy({
+      esameAmbulatorio: {
+        esameId: createConfermeDto.esameId,
+      },
     });
     if (conferma)
-      throw new HttpException('Conferma già esistente', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        "Hai già confermato questo esame in un ambulatorio. Se vuoi cambiare l'ambulatorio, cancella la conferma precedente",
+        HttpStatus.BAD_REQUEST,
+      );
 
     return this.confermeRepository.save(
       this.confermeRepository.create({
