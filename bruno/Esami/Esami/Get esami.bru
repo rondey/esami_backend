@@ -5,15 +5,15 @@ meta {
 }
 
 get {
-  url: http://localhost:3000/esami?descrizioneEsame=dx&ambulatorioId=10&posizioneId=8
+  url: http://localhost:3000/esami?ambulatorioId=3&posizioneId=11&descrizioneEsame=dx
   body: none
   auth: inherit
 }
 
 params:query {
+  ambulatorioId: 3
+  posizioneId: 11
   descrizioneEsame: dx
-  ambulatorioId: 10
-  posizioneId: 8
 }
 
 settings {

@@ -9,7 +9,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [process.env.FRONTEND_URL],
   });
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
   await loadConfig();
 

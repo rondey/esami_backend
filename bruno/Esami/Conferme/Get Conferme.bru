@@ -5,13 +5,14 @@ meta {
 }
 
 get {
-  url: http://localhost:3000/conferme?sortBy=id
+  url: http://localhost:3000/conferme?sortBy=esameAmbulatorio.esame.posizione.descrizionePosizione&sortOrder=desc
   body: none
   auth: inherit
 }
 
 params:query {
-  sortBy: id
+  sortBy: esameAmbulatorio.esame.posizione.descrizionePosizione
+  sortOrder: desc
 }
 
 settings {

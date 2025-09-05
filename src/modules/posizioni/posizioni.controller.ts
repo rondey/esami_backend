@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Query,
-  ValidationPipe,
   // Post,
   // Body,
   // Patch,
@@ -24,9 +23,7 @@ export class PosizioniController {
   // }
 
   @Get()
-  findAll(
-    @Query(new ValidationPipe({ transform: true })) data: GetPosizioniDto,
-  ) {
+  findAll(@Query() data: GetPosizioniDto) {
     return this.posizioniService.findAll(data);
   }
 

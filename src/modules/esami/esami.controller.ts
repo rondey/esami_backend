@@ -7,7 +7,6 @@ import {
   // Param,
   // Delete,
   Query,
-  ValidationPipe,
 } from '@nestjs/common';
 import { EsamiService } from './esami.service';
 import { GetEsamiDto } from './dto/get-esami.dto';
@@ -24,7 +23,7 @@ export class EsamiController {
   // }
 
   @Get()
-  findAll(@Query(new ValidationPipe({ transform: true })) data: GetEsamiDto) {
+  findAll(@Query() data: GetEsamiDto) {
     return this.esamiService.findAll(data);
   }
 

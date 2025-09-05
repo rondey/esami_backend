@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Query,
-  ValidationPipe,
   // Post,
   // Body,
   // Patch,
@@ -24,9 +23,7 @@ export class AmbulatoriController {
   // }
 
   @Get()
-  findAll(
-    @Query(new ValidationPipe({ transform: true })) data: FiltersEsamiDto,
-  ) {
+  findAll(@Query() data: FiltersEsamiDto) {
     return this.ambulatoriService.findAll(data);
   }
 
