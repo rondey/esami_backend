@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FiltersEsamiDto } from 'src/modules/esami/dto/filter-esami.dto';
-import { Repository } from 'typeorm';
+import { Not, IsNull, Repository } from 'typeorm';
 import { Ambulatorio } from './entities/ambulatorio.entity';
 import { buildCommonFilters } from 'src/modules/esami/helpers/filters';
 // import { CreateAmbulatoriDto } from './dto/create-ambulatori.dto';
@@ -22,6 +22,8 @@ export class AmbulatoriService {
     return this.ambulatoriRepository.find({
       where: {
         esamiAmbulatori: {
+          // This is a trick to ensure that each ambulatorio has at least one esame: enforces TypeORM to make a left join with esamiAmbulatori, then gets for each row the ambulatorio with the esameId present
+          esameId: Not(IsNull()),
           esame: {
             ...buildCommonFilters(data),
           },
