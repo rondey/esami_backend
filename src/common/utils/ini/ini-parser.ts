@@ -31,12 +31,12 @@ export async function parseIniStrict(file: string): Promise<IniData> {
 
     let value: IniValue;
 
-    // --- STRINGHE ---
+    // --- STRINGS ---
     if (/^".*"$/.test(valueRaw)) {
-      // rimuovo i doppi apici esterni
+      // remove double quotes
       value = valueRaw.slice(1, -1);
     }
-    // --- NUMERI ---
+    // --- NUMBERS ---
     else if (/^-?\d+(\.\d+)?$/.test(valueRaw)) {
       value = Number(valueRaw);
     }
@@ -44,7 +44,7 @@ export async function parseIniStrict(file: string): Promise<IniData> {
     else if (/^(true|false)$/.test(valueRaw)) {
       value = valueRaw === 'true';
     }
-    // --- ERRORE ---
+    // --- ERROR ---
     else {
       throw new Error(
         `Linea ${index + 1}, sezione [${currentSection}], chiave "${key}": ` +

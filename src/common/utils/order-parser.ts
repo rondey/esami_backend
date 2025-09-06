@@ -14,6 +14,6 @@ export function orderParser<T>(
     .reverse()
     .reduce<OrderNode>((acc, key) => ({ [key]: acc }), leaf);
 
-  // Cast necessario: TS non può verificare dinamicamente la corrispondenza con T
+  // Cast mandatory: TS cannot verify dynamically the match with T
   return nested as FindOptionsOrder<T>;
 }

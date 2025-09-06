@@ -11,7 +11,7 @@ interface SortPipeOptions {
   allowedSortColumns?: string[];
 }
 
-// Tipo per il valore in ingresso dalla query string
+// Input type
 interface SortQuery {
   sortBy?: string;
   sortOrder?: string;
