@@ -8,7 +8,7 @@ dotenvConfig({ path: 'src/.env' });
 
 const configTypeOrm: DataSourceOptions = {
   type: 'better-sqlite3',
-  database: process.env.DATABASE_HOST || 'default.db',
+  database: process.env.DATABASE_HOST || 'esamidb.sqlite',
   entities: [path.join(__dirname, '../**/*.entity{.ts,.js}')],
   migrations: [path.join(__dirname, '../migrations/*{.ts,.js}')],
   synchronize: false,
